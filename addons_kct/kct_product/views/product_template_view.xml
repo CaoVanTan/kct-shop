@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kct_product_window" model="ir.actions.act_window">
+        <field name="name">Sản phẩm</field>
+        <field name="res_model">kct.product</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo mới sản phẩm!
+            </p>
+        </field>
+    </record>
+
+    <record id="kct_product_kanban" model="ir.ui.view">
+        <field name="name">kct.product.kanban</field>
+        <field name="model">kct.product</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="price"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
+                            <field name="image" class="o_kanban_image_fill_left d-block" preview_image="image"
+                                   widget="background_image" options="{'zoom': true, 'zoom_delay': 1000}"/>
+
+                            <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <field name="price"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="kct_product_tree" model="ir.ui.view">
+        <field name="name">kct.product.tree</field>
+        <field name="model">kct.product</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="image"/>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="description"/>
+                <field name="price" widget='monetary'/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="kct_product_form" model="ir.ui.view">
+        <field name="name">kct.product.form</field>
+        <field name="model">kct.product</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="name" name="name_label" string="Tên sản phẩm"/>
+                        <h2>
+                            <field name="name" required="True"/>
+                        </h2>
+                    </div>
+                    <div class="oe_title">
+                        <label for="description" name="description_label" string="Mô tả"/>
+                        <h4>
+                            <field name="description"/>
+                        </h4>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="category_id"/>
+                            <field name="has_sugar"/>
+                            <field name="all_size"/>
+                            <field name="size_ids" widget="many2many_tags"
+                                   attrs="{'invisible': [('all_size','=',True)]}"/>
+                        </group>
+                        <group>
+                            <field name="price"/>
+                            <field name="has_ice"/>
+                            <field name="all_topping"/>
+<!--                            options="{'no_edit': True, 'no_create': True, 'no_open': True}"-->
+                            <field name="topping_ids" widget="many2many_tags"
+                                   attrs="{'invisible': [('all_topping','=',True)]}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_product_template_root" name="Sản phẩm" sequence="26"
+              web_icon="kct_product,static/description/icon.png" action="kct_product_window"/>
+    <menuitem id="menu_product_category_master" name="Danh mục" sequence="0" parent="menu_product_template_root"/>
+</odoo>

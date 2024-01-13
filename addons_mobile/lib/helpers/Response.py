@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from odoo import _
-
 
 class Response(object):
     SUCCESS = 200
@@ -21,14 +19,14 @@ class Response(object):
     @staticmethod
     def success(message, data):
         Response.__CODE = Response.SUCCESS
-        Response.__STATUS = _('Success')
+        Response.__STATUS = 'Success'
         Response.__set_message_data(message, data)
         return Response
 
     @staticmethod
     def error(message=False, data={}, code=False):
         Response.__CODE = code or Response.ERROR
-        Response.__STATUS = _('Error')
+        Response.__STATUS = 'Error'
         Response.__set_message_data(message or Response.__DEFAULT_ERROR_MESSAGE, data)
         return Response
 

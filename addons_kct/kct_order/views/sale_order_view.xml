@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_window" model="ir.actions.act_window">
+        <field name="name">Đơn hàng</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                   (0, 0, {'view_mode': 'tree', 'view_id': ref('sale_order_tree')}),
+                   (0, 0, {'view_mode': 'form', 'view_id': ref('sale_order_form')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo mới đơn hàng!
+            </p>
+        </field>
+    </record>
+
+    <record id="sale_order_tree" model="ir.ui.view">
+        <field name="name">sale_order_tree</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <tree create="false"
+                  delete="false"
+                  export_xlsx="false"
+                  decoration-info="x_state == 'pending'"
+                  decoration-danger="x_state == 'delivering'"
+                  decoration-muted="x_state == 'cancel'"
+                  decoration-success="x_state == 'received'"
+                  decoration-warning="x_state == 'waiting'"
+                  default_order="date_order desc, name desc">
+                <field name="name"/>
+                <field name="date_order"/>
+                <field name="partner_id"/>
+                <field name="x_amount_total" widget='monetary'/>
+                <field name="x_state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sale_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_receive" string="Nhận đơn hàng"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('x_state', '!=', 'pending')]}"/>
+                    <button name="action_delivery" string="Giao đơn hàng"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': [('x_state', '!=', 'received')]}"/>
+                    <button name="action_cancel" type="object"
+                            string="Hủy đơn hàng"
+                            attrs="{'invisible': [('x_state', '!=', 'pending')]}"/>
+                    <button name="action_notification" type="object"
+                            string="Thông báo"/>
+                    <field name="x_state" widget="statusbar"
+                           statusbar_visible="pending,received,waiting,delivering,delivered,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" required="True" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group name="sale_header">
+                        <group name="partner_details">
+                            <field name="partner_id" readonly="1"/>
+                            <field name="address_compute"/>
+                        </group>
+                        <group name="order_details">
+                            <field name="date_order" readonly="1"/>
+                            <field name="delivery_emp_id"
+                                   options="{'no_create': True}"
+                                   attrs="{'invisible': ['|', ('x_state', '=', 'pending'), ('x_state', '=', 'cancel')],
+                                   'readonly': [('x_state', '!=', 'received')]}"
+                                   domain="[('is_company', '=', False), ('employee', '=', None), ('company_id', '=', None)]"/>
+
+                            <field name="company_id" invisible="1"/>
+                            <field name="state" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết đơn hàng" name="order_line">
+                            <field name="order_line" nolabel="1">
+                                <tree create="0" editable="0" delete="0">
+                                    <field name="x_product_id" string="Sản phẩm" readonly="1"/>
+                                    <field name="product_uom_qty" string="Số lượng" readonly="1"/>
+                                    <field name="x_price_unit" string="Đơn giá" readonly="1"/>
+                                    <field name="size_id" string="Kích thước" readonly="1"/>
+                                    <field name="ice" string="Mức đá (%)" readonly="1"/>
+                                    <field name="sugar" string="Mức đường (%)" readonly="1"/>
+                                    <field name="topping_compute" string="Topping" widget="html" readonly="1"/>
+                                    <field name="x_price_subtotal" string="Thành tiền" readonly="1"/>
+                                </tree>
+                            </field>
+                            <group name="note_group" col="6" class="mt-2 mt-md-0">
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                    <label for="x_amount_total" string="Tổng"/>
+                                    <field name="x_amount_total" nolabel="1" readonly="1" widget="monetary"
+                                           options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                                <div class="clearfix"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cancel_sale_order_form" model="ir.ui.view">
+        <field name="name">cancel_sale_order_form</field>
+        <field name="priority">9999</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="note" string="Lý do hủy"
+                           required="1"/>
+                </group>
+                <footer>
+                    <button name="confirm_cancel_order" string="Hủy đơn hàng"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button special="cancel" string="Hủy" class="oe_link"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_sale_order_root" name="Đơn hàng" sequence="25"
+              web_icon="kct_order,static/description/icon.png" action="sale_order_window"/>
+</odoo>

@@ -1,4 +1,5 @@
-from . import kct_product
-from . import kct_product_category
-from . import kct_product_size
-from . import kct_product_topping
+from . import product_template
+from . import product_category
+from . import product_size
+from . import product_topping
+# from . import kct_product

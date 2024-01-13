@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import http, _
-
+from odoo import http
 from .ApiException import ApiException
-
 import re
 from datetime import datetime
 
@@ -149,16 +147,15 @@ class Params(object):
                         raise ApiException("Trường %s không được để trống !" % file_name,
                                            ApiException.INVALID_DATA_TYPE)
                     return
-            raise ApiException(_("Trường %s đang bị thiếu") % file_name, ApiException.PARAM_NOT_PROVIDE)
+            raise ApiException("Trường %s đang bị thiếu" % file_name, ApiException.PARAM_NOT_PROVIDE)
         else:
             if params.get(relation, '') not in relation_data:
                 return
             else:
                 if params.get(field[0]) == '':
-                    raise ApiException(_("Trường %s không được để trống !") % file_name,
-                                       ApiException.INVALID_DATA_TYPE)
+                    raise ApiException("Trường %s không được để trống !" % file_name, ApiException.INVALID_DATA_TYPE)
                 if not params.get(field[0]):
-                    raise ApiException(_("Trường %s đang bị thiếu") % file_name, ApiException.PARAM_NOT_PROVIDE)
+                    raise ApiException("Trường %s đang bị thiếu" % file_name, ApiException.PARAM_NOT_PROVIDE)
 
     @staticmethod
     def __validate_data_type(field, rule, value, nullable=False):
@@ -183,8 +180,7 @@ class Params(object):
             return
         pattern = re.compile(split_rule[1])
         if split_rule[0] == 'str' and not pattern.fullmatch(value):
-            raise ApiException('%s không đúng định dạng.' % field,
-                               ApiException.INVALID_DATA_FORMAT)
+            raise ApiException('%s không đúng định dạng.' % field, ApiException.INVALID_DATA_FORMAT)
         return
 
     @staticmethod
@@ -202,5 +198,4 @@ class Params(object):
             datetime.strptime(value, pattern)
             return
         except Exception as e:
-            raise ApiException('Trường %s không đúng định dạng %s'
-                               % (field, pattern), ApiException.INVALID_DATA_TYPE)
+            raise ApiException('Trường %s không đúng định dạng %s' % (field, pattern), ApiException.INVALID_DATA_TYPE)

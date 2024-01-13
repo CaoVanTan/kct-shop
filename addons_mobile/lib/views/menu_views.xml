@@ -1,0 +1,5 @@
+<odoo>
+    <data>
+        <menuitem id="integrated_system_root" name="Integrated" parent="base.menu_custom" sequence="14"/>
+    </data>
+</odoo>

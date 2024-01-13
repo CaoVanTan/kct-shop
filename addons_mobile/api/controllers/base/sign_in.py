@@ -9,13 +9,12 @@ class SignIn(Controller):
 
     @route(route=Route('sign_in'), method=['POST'], auth='public', type='json')
     def sign_in(self):
-        verify = ['type|str|require',
-                  'login|str|require:type{"odoo"}',
+        verify = ['login|str|require:type{"odoo"}',
                   'password|str|require:type{"odoo"}',
-                  'accessToken|str|require:type{"facebook","google", "apple"}',
                   'device_id|str|require',
                   'device_info|str',
                   'firebase_token|str',
+                  'role|str|require',
                   ]
         try:
             res = Dispatch.dispatch(SignInRepository(), 'sign_in', verify=verify, auth=True)

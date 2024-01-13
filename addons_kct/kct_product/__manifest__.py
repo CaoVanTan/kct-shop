@@ -8,11 +8,11 @@
     'sequence': -100,
     'installable': True,
     'assets': {},
-    'depends': [],
+    'depends': ['product'],
     'data': [
-        'views/kct_product_view.xml',
-        'views/kct_product_category_view.xml',
-        'views/kct_product_size_view.xml',
-        'views/kct_product_topping_view.xml',
+        'views/product_template_view.xml',
+        'views/product_category_view.xml',
+        'views/product_size_view.xml',
+        'views/product_topping_view.xml',
     ],
 }
