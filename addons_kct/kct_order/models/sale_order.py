@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.http import request
 
 
 class SaleOrder(models.Model):
@@ -19,18 +20,6 @@ class SaleOrder(models.Model):
     rating_emp = fields.Float(string='Đánh giá nhân viên giao hàng')
     rating_product = fields.Float(string='Đánh giá sản phẩm')
     rating_detail = fields.Char(string='Đánh giá chi tiết')
-
-    def action_notification(self):
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': 'Có thông báo mới',
-                'message': 'Bạn nhận được đơn hàng mới.',
-                'type': 'success',
-                'sticky': True,
-            }
-        }
 
     @api.depends('address', 'address_detail')
     def _address_computed_field(self):

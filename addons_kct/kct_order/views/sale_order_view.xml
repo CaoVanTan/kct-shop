@@ -53,8 +53,6 @@
                     <button name="action_cancel" type="object"
                             string="Hủy đơn hàng"
                             attrs="{'invisible': [('x_state', '!=', 'pending')]}"/>
-                    <button name="action_notification" type="object"
-                            string="Thông báo"/>
                     <field name="x_state" widget="statusbar"
                            statusbar_visible="pending,received,waiting,delivering,delivered,done"/>
                 </header>

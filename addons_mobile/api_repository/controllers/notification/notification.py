@@ -37,10 +37,3 @@ class Notification(Controller):
             return data
         except Exception as e:
             return ApiException(str(e), ApiException.UNKNOWN_ERROR)
-
-    def utc_to_local(self, utc_dt):
-        local_tz = pytz.timezone('Asia/Ho_Chi_Minh')
-        format = "%Y-%m-%d %H:%M:%S %Z%z"
-        now_utc = datetime.now(timezone('UTC'))
-        now_asia = utc_dt.astimezone(timezone('Asia/Ho_Chi_Minh'))
-        return now_asia.strftime(format)
