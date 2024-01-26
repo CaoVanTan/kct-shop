@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from odoo.http import route, Controller
 from ..helpers import Route, Dispatch, ApiException, Response
 from odoo.addons.api_repository.controllers.base.sign_in import SignIn as SignInRepository

@@ -32,5 +32,3 @@ class SaleOrderLine(models.Model):
         for record in self:
             formatted_toppings = "<br/>".join(item.name for item in record.topping_ids)
             record.topping_compute = f"<p>{formatted_toppings}</p>"
-
-

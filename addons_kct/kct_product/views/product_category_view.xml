@@ -33,16 +33,16 @@
         </field>
     </record>
 
-<!--    <record id="product_category_tree" model="ir.ui.view">-->
-<!--        <field name="name">product.category.tree</field>-->
-<!--        <field name="model">product.category</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <tree>-->
-<!--                <field name="name"/>-->
-<!--                <field name="image"/>-->
-<!--            </tree>-->
-<!--        </field>-->
-<!--    </record>-->
+    <!--    <record id="product_category_tree" model="ir.ui.view">-->
+    <!--        <field name="name">product.category.tree</field>-->
+    <!--        <field name="model">product.category</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <tree>-->
+    <!--                <field name="name"/>-->
+    <!--                <field name="image"/>-->
+    <!--            </tree>-->
+    <!--        </field>-->
+    <!--    </record>-->
 
     <menuitem id="menu_product_category" name="Danh mục sản phẩm" sequence="0" parent="menu_product_category_master"
               action="product_category_window"/>

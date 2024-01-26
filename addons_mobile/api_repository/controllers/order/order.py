@@ -1,6 +1,5 @@
 from odoo.http import Controller
 from ..helpers import ApiException
-from datetime import datetime
 import pytz
 
 

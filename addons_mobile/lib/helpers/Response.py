@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 class Response(object):
     SUCCESS = 200
     ERROR = 400

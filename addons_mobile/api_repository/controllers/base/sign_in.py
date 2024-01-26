@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
 from datetime import datetime
 from odoo.http import Controller
 from ..helpers import Authentication, ApiException
-import logging
-
-_logger = logging.getLogger(__name__)
 
 
 class SignIn(Controller):
@@ -31,7 +27,7 @@ class SignIn(Controller):
                 'device_id': params.get('device_id'),
                 'device_info': params.get('device_info', ''),
                 'access_token': sign,
-                'firebase_token': params.get('firebase_token', '')
+                'firebase_token': params.get('firebase_token', ''),
             })
 
         try:

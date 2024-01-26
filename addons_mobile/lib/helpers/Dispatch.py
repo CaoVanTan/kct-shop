@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import json
 from odoo import SUPERUSER_ID, tools
 from odoo.http import request

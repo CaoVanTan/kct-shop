@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from odoo.http import route, Controller
 from ..helpers import Route, Dispatch, Response, ApiException
 from odoo.addons.api_repository.controllers.base.change_password import \

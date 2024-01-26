@@ -13,7 +13,6 @@ class Profile(Controller):
                 'name': name,
                 'phone': phone,
             })
-
             return {'id': partner_id.id}
         except Exception as e:
             return ApiException(str(e), ApiException.UNKNOWN_ERROR)

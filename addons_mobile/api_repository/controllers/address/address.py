@@ -18,7 +18,6 @@ class Address(Controller):
                     'long': item.long,
                     'selected': item.selected,
                 })
-
             return data
         except Exception as e:
             return ApiException(str(e), ApiException.UNKNOWN_ERROR)

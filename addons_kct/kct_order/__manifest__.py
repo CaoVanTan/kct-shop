@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": "KCT Order",
     "category": "Hidden",

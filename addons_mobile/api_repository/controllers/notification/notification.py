@@ -1,7 +1,6 @@
 from odoo.http import Controller
 from ..helpers import ApiException
 import pytz
-from datetime import datetime, timezone
 
 
 class Notification(Controller):

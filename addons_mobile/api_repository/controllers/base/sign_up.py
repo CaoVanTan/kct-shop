@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-
 from odoo.http import Controller, request
 from ..helpers import ApiException
+
 
 class SignUp(Controller):
 

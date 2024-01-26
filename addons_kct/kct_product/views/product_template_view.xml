@@ -92,7 +92,7 @@
                             <field name="price"/>
                             <field name="has_ice"/>
                             <field name="all_topping"/>
-<!--                            options="{'no_edit': True, 'no_create': True, 'no_open': True}"-->
+                            <!--                            options="{'no_edit': True, 'no_create': True, 'no_open': True}"-->
                             <field name="topping_ids" widget="many2many_tags"
                                    attrs="{'invisible': [('all_topping','=',True)]}"/>
                         </group>

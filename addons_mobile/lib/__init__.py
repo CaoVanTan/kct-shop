@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from .helpers.Authentication import Authentication
 from .helpers.ApiException import ApiException
 from .helpers.Params import Params

@@ -1,6 +1,5 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.http import request
 
 
 class SaleOrder(models.Model):
@@ -8,8 +7,9 @@ class SaleOrder(models.Model):
 
     x_state = fields.Selection(
         [('pending', 'Chờ xác nhận'), ('received', 'Đã xác nhận'), ('waiting', 'Chờ lấy hàng'),
-         ('delivering', 'Đang giao'),
-         ('delivered', 'Đã giao'), ('done', 'Hoàn thành'), ('cancel', 'Hủy')], string="Trạng thái")
+         ('delivering', 'Đang giao'), ('delivered', 'Đã giao'), ('done', 'Hoàn thành'), ('cancel', 'Hủy')],
+        string="Trạng thái",
+    )
     x_amount_total = fields.Float(string='Tổng tiền', required=True)
     payment_method = fields.Char(string='Phương thức thanh toán', required=True)
     address_id = fields.Many2one('kct.res.address', string="Địa chỉ giao hàng", required=True, ondelete='cascade')
@@ -43,7 +43,7 @@ class SaleOrder(models.Model):
         if not self.delivery_emp_id:
             raise ValidationError('Vui lòng chọn nhân viên giao hàng!')
         orders = self.env['sale.order'].search(
-            [('delivery_emp_id.id', '=', self.delivery_emp_id.id), ('x_state', '=', 'waiting')])
+            [('delivery_emp_id.id', '=', self.delivery_emp_id.id), ('x_state', 'in', ['waiting', 'delivering'])])
         if len(orders) > 0:
             raise ValidationError('Nhân viên giao hàng không thể nhận thêm đơn hàng!')
         for record in self:

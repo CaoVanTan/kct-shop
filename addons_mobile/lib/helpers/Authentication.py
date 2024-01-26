@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import jwt
 from .ApiException import ApiException
 from datetime import datetime

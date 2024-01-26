@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from odoo.http import Controller
 from ..helpers import ApiException
 from odoo.exceptions import UserError, AccessDenied

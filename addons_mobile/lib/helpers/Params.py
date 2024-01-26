@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from odoo import http
 from .ApiException import ApiException
 import re
