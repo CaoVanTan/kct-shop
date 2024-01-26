@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_category_window" model="ir.actions.act_window">
+        <field name="name">Danh mục sản phẩm</field>
+        <field name="res_model">product.category</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo mới danh mục sản phẩm!
+            </p>
+        </field>
+    </record>
+
+    <record id="product_category_form" model="ir.ui.view">
+        <field name="name">product.category.form</field>
+        <field name="model">product.category</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="name" name="name_label" string="Danh mục"/>
+                        <h2>
+                            <field name="name" required="True"/>
+                        </h2>
+                    </div>
+                    <div class="oe_title">
+                        <label for="description" name="description_label" string="Mô tả"/>
+                        <field name="description"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--    <record id="product_category_tree" model="ir.ui.view">-->
+    <!--        <field name="name">product.category.tree</field>-->
+    <!--        <field name="model">product.category</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <tree>-->
+    <!--                <field name="name"/>-->
+    <!--                <field name="image"/>-->
+    <!--            </tree>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+    <menuitem id="menu_product_category" name="Danh mục sản phẩm" sequence="0" parent="menu_product_category_master"
+              action="product_category_window"/>
+</odoo>

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": "API Lib Mobile",
     "category": "Hidden",
@@ -9,7 +8,6 @@
         'security/ir.model.access.csv',
         'views/menu_views.xml',
         'views/res_users.xml',
-        'views/api_logger.xml',
     ],
     'demo': [],
 }

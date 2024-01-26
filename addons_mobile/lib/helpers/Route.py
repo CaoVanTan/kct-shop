@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 class Route(object):
     __ROOT_ENTRY_POINT = '/api/{0}'
 

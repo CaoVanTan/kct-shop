@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": "API Repository Mobile",
     "category": "",
