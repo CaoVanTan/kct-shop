@@ -12,7 +12,6 @@ class ProductTemplate(models.Model):
     all_topping = fields.Boolean(string="Tất cả topping", default=False)
     has_sugar = fields.Boolean(string="Có đường", default=True)
     has_ice = fields.Boolean(string="Có đá", default=True)
-
     category_id = fields.Many2one('product.category', string="Danh mục sản phẩm", required=True)
     size_ids = fields.Many2many('kct.product.size', string="Danh mục kích thước")
     topping_ids = fields.Many2many('kct.product.topping', string="Danh mục topping")

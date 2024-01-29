@@ -31,7 +31,9 @@
                 <field name="name"/>
                 <field name="date_order"/>
                 <field name="partner_id"/>
-                <field name="x_amount_total" widget='monetary'/>
+                <field name="delivery_emp_id"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="x_amount_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="x_state"/>
             </tree>
         </field>
@@ -74,7 +76,6 @@
                                    attrs="{'invisible': ['|', ('x_state', '=', 'pending'), ('x_state', '=', 'cancel')],
                                    'readonly': [('x_state', '!=', 'received')]}"
                                    domain="[('is_company', '=', False), ('employee', '=', None), ('company_id', '=', None)]"/>
-
                             <field name="company_id" invisible="1"/>
                             <field name="state" invisible="1"/>
                         </group>
@@ -83,18 +84,22 @@
                         <page string="Chi tiết đơn hàng" name="order_line">
                             <field name="order_line" nolabel="1">
                                 <tree create="0" editable="0" delete="0">
+                                    <field name="currency_id" invisible="1"/>
                                     <field name="x_product_id" string="Sản phẩm" readonly="1"/>
                                     <field name="product_uom_qty" string="Số lượng" readonly="1"/>
-                                    <field name="x_price_unit" string="Đơn giá" readonly="1"/>
+                                    <field name="x_price_unit" string="Đơn giá" readonly="1" widget="monetary"
+                                           options="{'currency_field': 'currency_id'}"/>
                                     <field name="size_id" string="Kích thước" readonly="1"/>
                                     <field name="ice" string="Mức đá (%)" readonly="1"/>
                                     <field name="sugar" string="Mức đường (%)" readonly="1"/>
                                     <field name="topping_compute" string="Topping" widget="html" readonly="1"/>
-                                    <field name="x_price_subtotal" string="Thành tiền" readonly="1"/>
+                                    <field name="x_price_subtotal" string="Thành tiền" readonly="1" widget="monetary"
+                                           options="{'currency_field': 'currency_id'}"/>
                                 </tree>
                             </field>
                             <group name="note_group" col="6" class="mt-2 mt-md-0">
                                 <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                    <field name="currency_id" invisible="1"/>
                                     <label for="x_amount_total" string="Tổng"/>
                                     <field name="x_amount_total" nolabel="1" readonly="1" widget="monetary"
                                            options="{'currency_field': 'currency_id'}"/>
@@ -115,13 +120,10 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="note" string="Lý do hủy"
-                           required="1"/>
+                    <field name="note" string="Lý do hủy" required="1"/>
                 </group>
                 <footer>
-                    <button name="confirm_cancel_order" string="Hủy đơn hàng"
-                            type="object"
-                            class="oe_highlight"/>
+                    <button name="confirm_cancel_order" string="Hủy đơn hàng" type="object" class="oe_highlight"/>
                     <button special="cancel" string="Hủy" class="oe_link"/>
                 </footer>
             </form>

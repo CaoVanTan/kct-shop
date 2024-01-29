@@ -10,7 +10,7 @@ class SaleOrder(models.Model):
          ('delivering', 'Đang giao'), ('delivered', 'Đã giao'), ('done', 'Hoàn thành'), ('cancel', 'Hủy')],
         string="Trạng thái",
     )
-    x_amount_total = fields.Float(string='Tổng tiền', required=True)
+    x_amount_total = fields.Float(string='Tổng tiền')
     payment_method = fields.Char(string='Phương thức thanh toán', required=True)
     address_id = fields.Many2one('kct.res.address', string="Địa chỉ giao hàng", required=True, ondelete='cascade')
     delivery_emp_id = fields.Many2one('res.partner', string="Nhân viên giao hàng")
@@ -20,6 +20,7 @@ class SaleOrder(models.Model):
     rating_emp = fields.Float(string='Đánh giá nhân viên giao hàng')
     rating_product = fields.Float(string='Đánh giá sản phẩm')
     rating_detail = fields.Char(string='Đánh giá chi tiết')
+    currency_id = fields.Many2one('res.currency', string="Currency")
 
     @api.depends('address', 'address_detail')
     def _address_computed_field(self):

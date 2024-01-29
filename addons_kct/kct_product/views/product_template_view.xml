@@ -25,7 +25,6 @@
                         <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
                             <field name="image" class="o_kanban_image_fill_left d-block" preview_image="image"
                                    widget="background_image" options="{'zoom': true, 'zoom_delay': 1000}"/>
-
                             <div class="oe_kanban_details">
                                 <div class="o_kanban_record_top">
                                     <div class="o_kanban_record_headings">
@@ -56,7 +55,7 @@
                 <field name="name"/>
                 <field name="category_id"/>
                 <field name="description"/>
-                <field name="price" widget='monetary'/>
+                <field name="price"/>
             </tree>
         </field>
     </record>
@@ -92,7 +91,6 @@
                             <field name="price"/>
                             <field name="has_ice"/>
                             <field name="all_topping"/>
-                            <!--                            options="{'no_edit': True, 'no_create': True, 'no_open': True}"-->
                             <field name="topping_ids" widget="many2many_tags"
                                    attrs="{'invisible': [('all_topping','=',True)]}"/>
                         </group>
