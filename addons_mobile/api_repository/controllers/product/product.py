@@ -1,5 +1,6 @@
 from odoo.http import Controller
 from ..helpers import ApiException
+from ..base.ir_http import IrHttp
 
 
 class Product(Controller):
@@ -7,7 +8,14 @@ class Product(Controller):
     def get_categories(self, cr, env, params):
         try:
             data = []
-            categories = env['product.category'].sudo().search([], order='id')
+            keyword = params.get('keyword')
+            page = params.get('page', 1)
+            items_per_page = params.get('items_per_page', 100)
+
+            domain_search = []
+            if keyword:
+                domain_search += [('name', 'ilike', keyword)]
+            categories = env['product.category'].sudo().search(domain_search, order='id')
             base_url = env['ir.config_parameter'].sudo().search([('key', '=', 'web.base.url')]).value + '/api'
 
             for item in categories:
@@ -18,8 +26,73 @@ class Product(Controller):
                     'image': image_url,
                     'description': item.description,
                 })
+            data = data[page * items_per_page - items_per_page:page * items_per_page]
+            return data
+        except Exception as e:
+            return ApiException(str(e), ApiException.UNKNOWN_ERROR)
+
+    def get_category_detail(self, cr, env, params):
+        try:
+            id = params.get('id')
+            category = env['product.category'].sudo().search([('id', '=', id)])
+            base_url = env['ir.config_parameter'].sudo().search([('key', '=', 'web.base.url')]).value + '/api'
+
+            image_url = f'{base_url}/web/image2/product.category/{category.id}/image'
+            data = {
+                'id': category.id,
+                'name': category.name,
+                'description': category.description,
+            }
 
             return data
+        except Exception as e:
+            return ApiException(str(e), ApiException.UNKNOWN_ERROR)
+
+    def create_category(self, cr, env, params):
+        try:
+            name = params.get('name')
+            description = params.get('description')
+
+            vals = {
+                'name': name,
+                'description': description,
+            }
+            category = env['product.category'].sudo().create(vals)
+
+            return {'id': category.id, 'name': category.name}
+        except Exception as e:
+            return ApiException(str(e), ApiException.UNKNOWN_ERROR)
+
+    def update_category(self, cr, env, params):
+        try:
+            id = params.get('id')
+            name = params.get('name')
+            description = params.get('description')
+
+            category = env['product.category'].sudo().search([('id', '=', id)], limit=1)
+            if not category:
+                raise ApiException('Danh mục sản phẩm không tồn tại!', ApiException.UNKNOWN_ERROR)
+
+            vals = {
+                'name': name,
+                'description': description,
+            }
+            category.sudo().write(vals)
+
+            return {'id': category.id, 'name': category.name}
+        except Exception as e:
+            return ApiException(str(e), ApiException.UNKNOWN_ERROR)
+
+    def delete_category(self, cr, env, params):
+        try:
+            id = params.get('id')
+
+            category = env['product.category'].sudo().search([('id', '=', id)], limit=1)
+            if not category:
+                raise ApiException('Danh mục sản phẩm không tồn tại!', ApiException.UNKNOWN_ERROR)
+            category.unlink()
+
+            return {'id': category.id}
         except Exception as e:
             return ApiException(str(e), ApiException.UNKNOWN_ERROR)
 
@@ -93,21 +166,28 @@ class Product(Controller):
     def get_products(self, cr, env, params):
         try:
             data = []
+            keyword = params.get('keyword')
             page = params.get('page', 1)
-            items_per_page = params.get('items_per_page', 10)
+            items_per_page = params.get('items_per_page', 100)
 
-            products = env['product.template'].sudo().search([])
-            base_url = env['ir.config_parameter'].sudo().search([('key', '=', 'web.base.url')]).value + '/api'
+            domain_search = []
+            if keyword:
+                domain_search += ['|', ('name', 'ilike', keyword), ('default_code', 'ilike', keyword)]
 
+            products = env['product.template'].sudo().search(domain_search)
             for item in products:
-                image_url = f'{base_url}/web/image2/product.template/{item.id}/image'
                 data.append({
                     'id': item.id,
                     'name': item.name,
                     'code': item.default_code,
-                    'description': item.description,
-                    'image': image_url,
+                    'description': item.description_sale or '',
+                    'image': IrHttp.get_image(self, env, model='product.template', model_id=item.id, field="image_1920"),
                     'price': item.list_price,
+                    'category_id': {
+                        'id': item.categ_id.id,
+                        'name': item.categ_id.name,
+                        'description': item.categ_id.description,
+                    },
                 })
 
             data = data[page * items_per_page - items_per_page:page * items_per_page]
@@ -118,16 +198,14 @@ class Product(Controller):
     def get_product_detail(self, cr, env, params):
         try:
             id = params.get('id')
-            product = env['product.template'].sudo().search([('id', '=', id)])
-            base_url = env['ir.config_parameter'].sudo().search([('key', '=', 'web.base.url')]).value + '/api'
 
-            image_url = f'{base_url}/web/image2/product.template/{product.id}/image'
+            product = env['product.template'].sudo().search([('id', '=', id)])
             data = {
                 'id': product.id,
                 'name': product.name,
                 'code': product.default_code,
-                'image': image_url,
-                'description': product.description,
+                'image': IrHttp.get_image(self, env, model='product.template', model_id=product.id, field="image_1920"),
+                'description': product.description_sale or '',
                 'price': product.list_price,
                 'category_id': {
                     'id': product.categ_id.id,
@@ -157,11 +235,11 @@ class Product(Controller):
                 'name': name,
                 'list_price': price,
                 'default_code': code,
-                'description': description,
+                'description_sale': description,
                 'categ_id': category.id,
             }
             if image:
-                vals['image'] = image
+                vals['image_1920'] = image
             product = env['product.template'].sudo().create(vals)
 
             return {'id': product.id, 'name': product.name}
@@ -190,12 +268,12 @@ class Product(Controller):
                 'name': name,
                 'list_price': price,
                 'default_code': code,
-                'description': description,
+                'description_sale': description,
                 'categ_id': category.id,
             }
             if image:
                 vals['image'] = image
-            env['product.template'].sudo().write(vals)
+            product.sudo().write(vals)
 
             return {'id': product.id, 'name': product.name}
         except Exception as e:

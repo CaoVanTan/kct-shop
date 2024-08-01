@@ -15,6 +15,56 @@ class Product(Controller):
         except ApiException as e:
             return e.to_json()
 
+    @route(route=Route('get_category_detail'), method=['POST'], auth='public', type='json')
+    def get_category_detail(self):
+        verify = [
+            'id|int|require',
+        ]
+        try:
+            res = Dispatch.dispatch(ProductRepository(), 'get_category_detail', verify=verify, auth=True)
+            return Response.success('Lấy dữ liệu thành công', data=res).to_json()
+        except ApiException as e:
+            return e.to_json()
+
+    @route(route=Route('category/create'), method=['POST'], auth='public', type='json')
+    def create_category(self):
+        verify = [
+            'access_token|str|require',
+            'name|str|require',
+            'description|str',
+        ]
+        try:
+            res = Dispatch.dispatch(ProductRepository(), 'create_category', verify=verify, auth=True)
+            return Response.success('Tạo bản ghi thành công', data=res).to_json()
+        except ApiException as e:
+            return e.to_json()
+
+    @route(route=Route('category/update'), method=['POST'], auth='public', type='json')
+    def update_category(self):
+        verify = [
+            'access_token|str|require',
+            'id|int|require',
+            'name|str|require',
+            'description|str',
+        ]
+        try:
+            res = Dispatch.dispatch(ProductRepository(), 'update_category', verify=verify, auth=True)
+            return Response.success('Cập nhật bản ghi thành công', data=res).to_json()
+        except ApiException as e:
+            return e.to_json()
+
+    @route(route=Route('category/delete'), method=['POST'], auth='public', type='json')
+    def delete_category(self):
+        verify = [
+            'access_token|str|require',
+            'id|int|require',
+        ]
+        try:
+            res = Dispatch.dispatch(ProductRepository(), 'delete_category', verify=verify, auth=True)
+            return Response.success('Xóa bản ghi thành công', data=res).to_json()
+        except ApiException as e:
+            return e.to_json()
+
     # @route(route=Route('get_products'), method=['POST'], auth='public', type='json')
     # def get_products(self):
     #     verify = [
