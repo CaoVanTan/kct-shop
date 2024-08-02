@@ -2,6 +2,9 @@ from odoo.http import Controller
 from ..helpers import ApiException
 from ..base.ir_http import IrHttp
 
+import base64
+
+
 
 class Product(Controller):
 
@@ -24,7 +27,7 @@ class Product(Controller):
                     'id': item.id,
                     'name': item.name,
                     'image': image_url,
-                    'description': item.description,
+                    'description': item.description or '',
                 })
             data = data[page * items_per_page - items_per_page:page * items_per_page]
             return data
@@ -41,7 +44,7 @@ class Product(Controller):
             data = {
                 'id': category.id,
                 'name': category.name,
-                'description': category.description,
+                'description': category.description or '',
             }
 
             return data
@@ -272,7 +275,8 @@ class Product(Controller):
                 'categ_id': category.id,
             }
             if image:
-                vals['image'] = image
+                vals['image_1920'] = base64.b64decode(image)
+
             product.sudo().write(vals)
 
             return {'id': product.id, 'name': product.name}
